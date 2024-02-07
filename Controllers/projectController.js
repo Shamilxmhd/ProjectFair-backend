@@ -24,3 +24,54 @@ exports.addProjects = async (req, res) => {
 }
 
 // get homepage projects 
+
+exports.getHomeprojects = async (req, res) => {
+    try {
+        const allProjects = await projects.find().limit(3)
+        res.status(200).json(allProjects)
+    } catch (err) {
+        res.status(401).json(err)
+    }
+}
+
+// get all projects
+exports.getAllProjects = async (req, res) => {
+    try {
+        const allProjects = await projects.find()
+        res.status(200).json(allProjects)
+    } catch (err) {
+        res.status(401).json(err)
+    }
+}
+
+
+
+
+
+// get user projects
+exports.getUserProjects = async (req, res) => {
+    const userId = req.payload
+    try {
+        const userProjects = await projects.find({ userId })
+        res.status(200).json(userProjects)
+    } catch (err) {
+        res.status(401).json(err)
+    }
+}
+
+// edit project
+exports.editProject = async (req, res) => {
+    const { title, overview, languages, github, website, projectImage } = req.body
+    const uploadImage = req.file ? req.file.filename : projectImage
+    const userId = req.payload
+    const { pid } = req.params
+    try {
+        const updateProject = await projects.findByIdAndUpdate({ _id: pid }, {
+            title, languages, overview, github, website, projectImage: uploadImage, userId
+        }, { new: true })
+        await updateProject.save()
+        res.status(200).json(updateProject)
+    } catch (err) {
+        res.status(401).json(err)
+    }
+}
