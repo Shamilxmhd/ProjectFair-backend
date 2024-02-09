@@ -1,6 +1,7 @@
 const users = require('../Models/userModel')
 const jwt = require('jsonwebtoken')
 
+// register
 exports.register = async (req, res) => {
     const { username, email, password } = req.body
     console.log("Inside Register Request");
@@ -23,6 +24,7 @@ exports.register = async (req, res) => {
     }
 }
 
+// login
 exports.login = async (req, res) => {
     const { email, password } = req.body
     console.log("Inside login Request");

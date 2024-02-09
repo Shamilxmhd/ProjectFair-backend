@@ -6,8 +6,8 @@ const router = require('./Routes/routes')
 require('./DB/connection')
 
 const pfServer = express()
-
 pfServer.use(cors())
+
 //application specific middleware
 pfServer.use(express.json())
 pfServer.use(router)

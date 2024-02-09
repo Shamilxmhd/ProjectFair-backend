@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 
+// jwtMiddleware
 const jwtMiddleware = (req, res, next) => {
     console.log("Inside JWT Middleware");
  

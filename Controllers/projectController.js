@@ -1,3 +1,4 @@
+
 const projects = require('../Models/projectModel')
 
 //addproject
@@ -24,7 +25,6 @@ exports.addProjects = async (req, res) => {
 }
 
 // get homepage projects 
-
 exports.getHomeprojects = async (req, res) => {
     try {
         const allProjects = await projects.find().limit(3)
@@ -36,17 +36,18 @@ exports.getHomeprojects = async (req, res) => {
 
 // get all projects
 exports.getAllProjects = async (req, res) => {
+    const searchKey = req.query.search
+    console.log(searchKey);
+    const query = {
+        languages: { $regex: searchKey, $options: 'i' }
+    }
     try {
-        const allProjects = await projects.find()
+        const allProjects = await projects.find(query)
         res.status(200).json(allProjects)
     } catch (err) {
         res.status(401).json(err)
     }
 }
-
-
-
-
 
 // get user projects
 exports.getUserProjects = async (req, res) => {
@@ -65,6 +66,7 @@ exports.editProject = async (req, res) => {
     const uploadImage = req.file ? req.file.filename : projectImage
     const userId = req.payload
     const { pid } = req.params
+    console.log(pid);
     try {
         const updateProject = await projects.findByIdAndUpdate({ _id: pid }, {
             title, languages, overview, github, website, projectImage: uploadImage, userId
@@ -72,6 +74,17 @@ exports.editProject = async (req, res) => {
         await updateProject.save()
         res.status(200).json(updateProject)
     } catch (err) {
+        res.status(401).json(err)
+    }
+}
+
+// delete project
+exports.removeProject = async (req, res) => {
+    const { pid } = req.params
+    try {
+        const deleteData = await projects.findByIdAndDelete({ _id: pid })
+        res.status(200).json(deleteData)
+    } catch {
         res.status(401).json(err)
     }
 }
