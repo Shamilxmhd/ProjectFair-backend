@@ -31,5 +31,8 @@ router.put('/project/edit/:pid', jwtMiddleware, multerConfig.single('projectImag
 // remove project
 router.delete('/project/remove/:pid', jwtMiddleware, projectController.removeProject)
 
+// update user
+router.put('/user/edit', jwtMiddleware, multerConfig.single('profileImage'), userController.editUser)
+
 
 module.exports = router
